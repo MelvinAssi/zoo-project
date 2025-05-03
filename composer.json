@@ -1,0 +1,18 @@
+{
+    "name": "melvin/arcadia",
+    "description": "Un projet Symfony pour le zoo Arcadia",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Melvin\\Arcadia\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Assi Melvin",
+            "email": "melvinassi.pro@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}

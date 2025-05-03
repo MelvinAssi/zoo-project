@@ -1,0 +1,20 @@
+# .gitignore
+
+# Ignore les fichiers et répertoires générés
+/vendor/
+/var/
+/node_modules/
+/public/build/
+/public/uploads/
+/.env
+/.env.local
+/.env.*.local
+/.idea/
+/.vscode/
+/*.swp
+.DS_Store
+
+# Symfony specific
+.phpunit.result.cache
+phpstan.cache
+.cache/
