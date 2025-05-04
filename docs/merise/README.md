@@ -66,3 +66,107 @@
 26. Les messages sont stockés dans la base avec leur date d’envoi.
 
 27. Seuls les employés et administrateurs peuvent lire et répondre aux messages.
+
+### 🔒 Sécurité et données sensibles
+28. Le mot de passe ne doit jamais être stocké en clair. Il est haché à l’aide de bcrypt, et seul le hachage est stocké dans la base de données.
+
+
+29. Les utilisateurs doivent être automatiquement déconnectés après une période d’inactivité définie (ex. : 30 minutes).
+
+
+30. Les données sensibles (comme l'email et le mot de passe) ne doivent jamais être renvoyées dans les réponses d’API, même dans les réponses d'erreur.
+
+
+###  🏢 Gestion de l'administration et des rôles
+31. Les administrateurs peuvent modifier les rôles des utilisateurs (par exemple, attribuer ou révoquer le rôle d'administrateur).
+
+
+32. Un administrateur peut désactiver temporairement un compte utilisateur sans le supprimer de la base de données.
+
+
+###  🐾 Gestion des animaux
+33. Chaque animal doit être lié à un enclos spécifique. Un enclos peut contenir plusieurs animaux.
+
+
+34. Le statut d’un animal (disponible, en soin, etc.) peut être mis à jour uniquement par un employé ou un administrateur.
+
+
+### 🏠 Enclos
+35. Chaque enclos doit avoir une capacité maximale d'animaux. Cette capacité doit être vérifiée lors de l'ajout d’un nouvel animal dans un enclos.
+
+
+### 📩 Formulaire de contact
+36. Les messages envoyés via le formulaire "Nous contacter" doivent être traités par les employés ou administrateurs 
+
+## Dictionnaire de Données
+
+1. Utilisateur
+
+| Nom du champ|	Type |   Contraintes |   Description |
+|--------------|----------|--------------------|-------------|
+| id	| UUID / SERIAL	PK,| unique, non nul	|Identifiant unique de l’utilisateur |
+|username|	VARCHAR(50)	|unique, non nul|	Nom d’utilisateur
+|email	|VARCHAR(100)	|unique, non nul, format email|	Adresse email de l’utilisateur|
+|password|	TEXT	|non nul, haché (bcrypt)	|Mot de passe haché|
+|role	|ENUM	|valeurs : 'VISITEUR', 'EMPLOYE', 'ADMIN'	|Rôle de l’utilisateur|
+|created_at	|TIMESTAMP	|auto-généré|Date de création du compte|
+|is_active|	BOOLEAN	|défaut true|	Statut actif ou désactivé du compte|
+|first_login_done|	BOOLEAN	|défaut false|	Indique si le mot de passe a été changé
+
+2. Animal
+
+| Nom du champ|	Type |   Contraintes |   Description |
+|--------------|----------|--------------------|-------------|
+|id	|UUID / SERIAL	PK, unique,| non nul	|Identifiant unique de l’animal
+nom	|VARCHAR(100)	|non nul|	Nom de l’animal
+espece	|VARCHAR(100)|	non nul|	Espèce de l’animal
+age	|INTEGER|	≥ 0	|Âge de l’animal en années
+description	|TEXT	|optionnel|	Description de l’animal
+photo_url	|TEXT	|optionnel	|URL de la photo
+enclos_id|	FOREIGN KEY	|vers Enclos(id),| non nul	|Référence à l’enclos de l’animal
+created_by|	FOREIGN KEY|	vers Utilisateur(id)	|Créateur de la fiche
+updated_by|	FOREIGN KEY	|vers Utilisateur(id)|	Dernier à avoir modifié
+created_at|	TIMESTAMP|	auto-généré	|Date de création
+updated_at|	TIMESTAMP|	auto-maj	|Date de dernière modification
+
+3. Enclos
+
+| Nom du champ|	Type |   Contraintes |   Description |
+|--------------|----------|--------------------|-------------|
+id	|UUID / SERIAL|	PK, unique, non nul	|Identifiant de l’enclos
+nom	|VARCHAR(100)|	non nul, unique	|Nom de l’enclos
+capacite_max	|INTEGER	|> 0|	Capacité maximale d’animaux
+type_espece	|VARCHAR(100)	|optionnel	|Type d’espèce prévue (si spécifique)
+localisation	|VARCHAR(255)|	optionnel|	Position ou référence dans le zoo
+
+4. Message (Nous Contacter)
+
+| Nom du champ|	Type |   Contraintes |   Description |
+|--------------|----------|--------------------|-------------|
+id	|UUID / SERIAL	|PK, unique, non nul	|Identifiant du message
+nom	|VARCHAR(100)	|non nul	|Nom du visiteur
+email|	VARCHAR(100)	|non nul, format email	|Email de contact
+sujet	|VARCHAR(255)	|non nul	|Sujet du message
+contenu	|TEXT	|non nul	|Corps du message
+date_envoi	|TIMESTAMP|	auto-généré	|Date d’envoi
+lu_par|	FOREIGN KEY|	vers Utilisateur(id), null par défaut	|Employé qui a lu ou répondu
+
+5. Journal de Connexions
+
+| Nom du champ|	Type |   Contraintes |   Description |
+|--------------|----------|--------------------|-------------|
+id	|UUID / SERIAL|	PK, unique, non nul	|Identifiant
+user_id	|FOREIGN KEY	|vers Utilisateur(id)	|Utilisateur connecté
+date_connexion|	TIMESTAMP|	auto-généré|	Date/heure de connexion
+adresse_ip|	VARCHAR(50)|	optionnel	|Adresse IP
+user_agent	|TEXT	|optionnel|	Informations sur le navigateur
+
+
+6. HORAIRES_ZOO
+
+| Nom du champ|	Type |   Contraintes |   Description |
+|--------------|----------|--------------------|-------------|
+id_horaire|	SERIAL (int)|	PK	Identifiant unique|Identifiant
+jour	|VARCHAR(20)	|NOT NULL|	Jour de la semaine
+heure_ouverture	|TIME	|NOT NULL	|Heure d'ouverture du zoo
+heure_fermeture	|TIME	|NOT NULL|	Heure de fermeture du zoo
