@@ -1,10 +1,10 @@
 {
-    "name": "melvin/arcadia",
-    "description": "Un projet Symfony pour le zoo Arcadia",
+    "name": "melvin/zoo",
+    "description": "Un projet Symfony pour le zoo ",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Melvin\\Arcadia\\": "src/"
+            "Melvin\\Zoo\\": "src/"
         }
     },
     "authors": [
