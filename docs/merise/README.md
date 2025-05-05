@@ -1,5 +1,12 @@
 
 # Conception de la Base de Données avec Merise
+## Sommaire
+1. [Règles de Gestion](#règles-de-gestion)
+2. [Dictionnaire de Données](#dictionnaire-de-données)
+3. [MCD](#mcd)
+4. [MLD](#mld)
+5. [MPD](#mpd)
+6. [Table SQL](#table-sql)
 
 ## Règles de Gestion
 ### 🔐 Utilisateurs et sécurité
@@ -108,7 +115,7 @@
 |username|	VARCHAR(50)	|unique, non nul|	Nom d’utilisateur
 |email	|VARCHAR(100)	|unique, non nul, format email|	Adresse email de l’utilisateur|
 |password|	TEXT	|non nul, haché (bcrypt)	|Mot de passe haché|
-|role	|ENUM	|valeurs : 'VISITEUR', 'EMPLOYE', 'ADMIN'	|Rôle de l’utilisateur|
+|role	|ENUM	|valeurs :  'EMPLOYE', 'ADMIN'	|Rôle de l’utilisateur|
 |created_at	|TIMESTAMP	|auto-généré|Date de création du compte|
 |is_active|	BOOLEAN	|défaut true|	Statut actif ou désactivé du compte|
 |first_login_done|	BOOLEAN	|défaut false|	Indique si le mot de passe a été changé
@@ -117,7 +124,7 @@
 
 | Nom du champ|	Type |   Contraintes |   Description |
 |--------------|----------|--------------------|-------------|
-|id	|UUID / SERIAL	PK, unique,| non nul	|Identifiant unique de l’animal
+|id	|UUID / SERIAL	PK, |unique, non nul	|Identifiant unique de l’animal
 nom	|VARCHAR(100)	|non nul|	Nom de l’animal
 espece	|VARCHAR(100)|	non nul|	Espèce de l’animal
 age	|INTEGER|	≥ 0	|Âge de l’animal en années
@@ -162,7 +169,7 @@ adresse_ip|	VARCHAR(50)|	optionnel	|Adresse IP
 user_agent	|TEXT	|optionnel|	Informations sur le navigateur
 
 
-6. HORAIRES_ZOO
+6. HORAIRES_ZOO 
 
 | Nom du champ|	Type |   Contraintes |   Description |
 |--------------|----------|--------------------|-------------|
@@ -170,3 +177,92 @@ id_horaire|	SERIAL (int)|	PK	Identifiant unique|Identifiant
 jour	|VARCHAR(20)	|NOT NULL|	Jour de la semaine
 heure_ouverture	|TIME	|NOT NULL	|Heure d'ouverture du zoo
 heure_fermeture	|TIME	|NOT NULL|	Heure de fermeture du zoo
+
+## MCD 
+(Modèle Conceptuel de Données)
+![MCD](MCD.jpg)
+
+
+## MLD 
+(Modèle Logique de Données)
+![MLD](MLD.jpg)
+## MPD 
+(Modèle Physique de Données)
+
+
+
+```sql
+CREATE TABLE USERS(
+   id_users VARCHAR(50),
+   username VARCHAR(50) NOT NULL,
+   email VARCHAR(50) NOT NULL,
+   password VARCHAR(100) NOT NULL,
+   role LOGICAL NOT NULL,
+   created_at DATETIME NOT NULL,
+   is_active LOGICAL NOT NULL,
+   first_login_done LOGICAL NOT NULL,
+   PRIMARY KEY(id_users),
+   UNIQUE(username),
+   UNIQUE(email)
+);
+
+CREATE TABLE enclosure(
+   id_enclosure VARCHAR(50),
+   name VARCHAR(50) NOT NULL,
+   max_capacity INT NOT NULL,
+   specie_type VARCHAR(50) NOT NULL,
+   localisation INT NOT NULL,
+   PRIMARY KEY(id_enclosure),
+   UNIQUE(name)
+);
+
+CREATE TABLE opening_hours(
+   id VARCHAR(50),
+   day_ VARCHAR(10) NOT NULL,
+   opennnig_time TIME NOT NULL,
+   closing_time TIME NOT NULL,
+   PRIMARY KEY(id),
+   UNIQUE(day_)
+);
+
+CREATE TABLE message(
+   id_message VARCHAR(50),
+   name VARCHAR(50) NOT NULL,
+   email VARCHAR(50) NOT NULL,
+   subject VARCHAR(50) NOT NULL,
+   content TEXT NOT NULL,
+   id_users VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_message),
+   UNIQUE(name),
+   FOREIGN KEY(id_users) REFERENCES USERS(id_users)
+);
+
+CREATE TABLE connection_log(
+   id_connection_log VARCHAR(50),
+   users_agent TEXT,
+   date_ DATETIME NOT NULL,
+   ip VARCHAR(50) NOT NULL,
+   id_users VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_connection_log),
+   FOREIGN KEY(id_users) REFERENCES USERS(id_users)
+);
+
+CREATE TABLE animal(
+   id_animal VARCHAR(50),
+   name VARCHAR(50) NOT NULL,
+   specie VARCHAR(50) NOT NULL,
+   age INT NOT NULL,
+   description TEXT,
+   created_at DATETIME NOT NULL,
+   updated_at DATETIME NOT NULL,
+   photo TEXT,
+   id_users VARCHAR(50) NOT NULL,
+   id_enclosure VARCHAR(50) NOT NULL,
+   id_users_1 VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_animal),
+   UNIQUE(name),
+   UNIQUE(specie),
+   FOREIGN KEY(id_users) REFERENCES USERS(id_users),
+   FOREIGN KEY(id_enclosure) REFERENCES enclosure(id_enclosure),
+   FOREIGN KEY(id_users_1) REFERENCES USERS(id_users)
+);

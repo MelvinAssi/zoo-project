@@ -1,0 +1,78 @@
+Sub Create_Tables()
+
+DoCmd.RunSQL "CREATE TABLE USERS(" & _
+   "id_users VARCHAR(50)," & _
+   "username VARCHAR(50) NOT NULL," & _
+   "email VARCHAR(50) NOT NULL," & _
+   "password VARCHAR(100) NOT NULL," & _
+   "role LOGICAL NOT NULL," & _
+   "created_at DATETIME NOT NULL," & _
+   "is_active LOGICAL NOT NULL," & _
+   "first_login_done LOGICAL NOT NULL," & _
+   "PRIMARY KEY(id_users)," & _
+   "UNIQUE(username)," & _
+   "UNIQUE(email)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE enclosure(" & _
+   "id_enclosure VARCHAR(50)," & _
+   "name VARCHAR(50) NOT NULL," & _
+   "max_capacity INT NOT NULL," & _
+   "specie_type VARCHAR(50) NOT NULL," & _
+   "localisation INT NOT NULL," & _
+   "PRIMARY KEY(id_enclosure)," & _
+   "UNIQUE(name)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE opening_hours(" & _
+   "id VARCHAR(50)," & _
+   "day_ VARCHAR(10) NOT NULL," & _
+   "opennnig_time TIME NOT NULL," & _
+   "closing_time TIME NOT NULL," & _
+   "PRIMARY KEY(id)," & _
+   "UNIQUE(day_)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE message(" & _
+   "id_message VARCHAR(50)," & _
+   "name VARCHAR(50) NOT NULL," & _
+   "email VARCHAR(50) NOT NULL," & _
+   "subject VARCHAR(50) NOT NULL," & _
+   "content TEXT NOT NULL," & _
+   "id_users VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(id_message)," & _
+   "UNIQUE(name)," & _
+   "FOREIGN KEY(id_users) REFERENCES USERS(id_users)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE connection_log(" & _
+   "id_connection_log VARCHAR(50)," & _
+   "users_agent TEXT," & _
+   "date_ DATETIME NOT NULL," & _
+   "ip VARCHAR(50) NOT NULL," & _
+   "id_users VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(id_connection_log)," & _
+   "FOREIGN KEY(id_users) REFERENCES USERS(id_users)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE animal(" & _
+   "id_animal VARCHAR(50)," & _
+   "name VARCHAR(50) NOT NULL," & _
+   "specie VARCHAR(50) NOT NULL," & _
+   "age INT NOT NULL," & _
+   "description TEXT," & _
+   "photo TEXT," & _
+   "created_at DATETIME NOT NULL," & _
+   "updated_at DATETIME NOT NULL," & _
+   "id_users VARCHAR(50) NOT NULL," & _
+   "id_enclosure VARCHAR(50) NOT NULL," & _
+   "id_users_1 VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(id_animal)," & _
+   "UNIQUE(name)," & _
+   "UNIQUE(specie)," & _
+   "FOREIGN KEY(id_users) REFERENCES USERS(id_users)," & _
+   "FOREIGN KEY(id_enclosure) REFERENCES enclosure(id_enclosure)," & _
+   "FOREIGN KEY(id_users_1) REFERENCES USERS(id_users)" & _
+");"   
+
+End Sub
