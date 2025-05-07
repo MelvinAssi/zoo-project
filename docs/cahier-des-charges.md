@@ -23,7 +23,7 @@ Employés : accès restreint
 ⚠️ Préciser si tu fixes un nombre d'utilisateurs simulés, objectifs API, etc.
 
 ### 1.5 Périmètre du projet
-Langue : Français uniquement
+Langue : Français ,Anglais
 
 Responsive design mobile & desktop
 
@@ -42,7 +42,7 @@ Palette de couleurs (dominante, secondaire, accent)
 
 Typographies utilisées
 
-Logo principal
+Logo principal  
 
 Exemple d'autres sites dont tu t'inspires
 
@@ -150,12 +150,15 @@ INSTALL.md (explication claire et pas à pas)
 ⚠️ Rappeler comment accéder à l’API, à l’interface admin, aux tests…
 
 ## 8. Planning prévisionnel
-Date	Tâche principale
-6-9 mai	Cahier des charges, maquettes, BDD (MERISE + UML)
-10-15 mai	Authentification, pages admin, Docker
-16-20 mai	CRUD API REST, Firebase, sécurité
-21-25 mai	Tests, responsive, SEO, accessibilité, présentation
-26 mai	Soutenance orale & rendu final
+
+| Date | Tâche principale |
+|:-----:  |:-:      |
+|6-9 mai	|Cahier des charges, maquettes, BDD (MERISE + UML)|
+|10-15 mai	|Authentification, pages admin, Docker|
+|16-20 mai	|CRUD API REST, Firebase, sécurité|
+|21-25 mai	|Tests, responsive, SEO, accessibilité, présentation|
+|26 mai	|Soutenance orale & rendu final|
+
 
 ## 9. Compétences visées du référentiel
 Compétence	Intégration dans le projet
