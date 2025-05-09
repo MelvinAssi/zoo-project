@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\Table(name: 'users')]
-class Users
+class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "NONE")]
@@ -18,22 +20,23 @@ class Users
 
     #[ORM\Column(type: 'string', length: 50, unique: true)]
     #[Groups(['user:read'])]
-    private string $username;
+    private ?string $username;
     
     #[ORM\Column(type: 'string', length: 50, unique: true)]
     #[Groups(['user:read'])]
-    private string $email;
+    private ?string $email;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private string $password;
+    private ?string $password;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type:"json")]
     #[Groups(['user:read'])]
-    private bool $role;
+    private array $roles = [];
+
 
     #[ORM\Column(type: 'datetime')]
     #[Groups(['user:read'])]
-    private \DateTimeInterface $createdAt;
+    private ?\DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'boolean')]
     #[Groups(['user:read'])]
@@ -78,15 +81,18 @@ class Users
         return $this;
     }
 
-    // Getter et Setter pour 'role'
-    public function getRole(): bool
+    public function getRoles(): array
     {
-        return $this->role;
+        $roles = $this->roles ?? [];
+        if (!in_array('ROLE_USER', $roles, true)) {
+            $roles[] = 'ROLE_USER';
+        }
+         return array_unique($roles);
     }
 
-    public function setRole(bool $role): self
+    public function setRoles(array $roles): self
     {
-        $this->role = $role;
+        $this->roles = $roles;
         return $this;
     }
 
@@ -136,6 +142,25 @@ class Users
     {
         $this->id = $id;
         return $this;
+    }
+
+
+
+
+
+    public function getSalt(): ?string
+    {
+        return null; // Pas nécessaire avec bcrypt/argon2i
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email; // ou email si tu préfères
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Efface les infos sensibles (si besoin)
     }
 
 }

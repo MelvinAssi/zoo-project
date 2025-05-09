@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UsersController extends AbstractController
 {   
-    #[Route('/users', name: 'user_list', methods: ['GET'])]
+    #[Route('/api/admin/users', name: 'user_list', methods: ['GET'])]   
     public function list(UsersRepository $usersRepository, SerializerInterface $serializer): Response
-    {        
+    {       
         $users = $usersRepository->findAll();        
         $jsonContent = $serializer->serialize($users, 'json', [
             'groups' => ['user:read'],
@@ -26,29 +26,37 @@ class UsersController extends AbstractController
         return new JsonResponse($jsonContent, 200, [], true);
     }
 
-    #[Route('/users', name: 'user_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $entityManager ,PasswordHasherInterface $passwordHasher): Response
+    #[Route('/api/admin/users', name: 'user_create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Décoder le contenu JSON de la requête
         $data = json_decode($request->getContent(), true); 
+        
+        // Créer une nouvelle instance de l'utilisateur
         $user = new Users();
         $user
-            ->setId(uniqid()) 
+            ->setId(uniqid())  // Générer un ID unique
             ->setUsername($data['username'])
             ->setEmail($data['email'])
-            ->setRole($data['role'])
-            ->setCreatedAt(new \DateTime())
-            ->setIsActive(true)
-            ->setFirstLoginDone(false);
-        
-        $hashedPassword = $passwordHasher->hash("AzertyAzerty25");
-        $user->setPassword($hashedPassword);
+            ->setRoles($data['role'])
+            ->setCreatedAt(new \DateTime())  // Date de création de l'utilisateur
+            ->setIsActive(true)  // L'utilisateur est actif
+            ->setFirstLoginDone(false);  // Le premier login n'est pas fait
+    
+        // Hacher le mot de passe
+        $hash = password_hash($data['password'], PASSWORD_ARGON2ID);
+        $user->setPassword($hash);
+
+        // Persister et sauvegarder l'utilisateur dans la base de données
         $entityManager->persist($user);
         $entityManager->flush();
-    
+        
+        // Retourner une réponse indiquant la création de l'utilisateur
         return new Response('Création d\'un utilisateur');
     }
+    
 
-    #[Route('/users/{id}', name: 'user_update', methods: ['PUT'])]
+    #[Route('/api/admin/users/{id}', name: 'user_update', methods: ['PUT'])]
     public function update(Request $request,EntityManagerInterface $entityManager,UsersRepository $usersRepository,string $id): Response
     {
         $data = json_decode($request->getContent(), true); 
@@ -66,14 +74,14 @@ class UsersController extends AbstractController
         }
     
         if (isset($data['role'])) {
-            $user->setRole($data['role']);
+            $user->setRoles($data['role']);
         }
 
         $entityManager->flush();
         return new Response("Modification de l'utilisateur $id ");
     }
 
-    #[Route('/users/{id}', name: 'user_delete', methods: ['DELETE'])]
+    #[Route('/api/admin/users/{id}', name: 'user_delete', methods: ['DELETE'])]
     public function delete(string $id, UsersRepository $usersRepository, EntityManagerInterface $entityManager): Response
     {
         $user = $usersRepository->find($id);
@@ -88,5 +96,6 @@ class UsersController extends AbstractController
         return new Response("Utilisateur $id supprimé avec succès");
     }
 
+    
 
 }

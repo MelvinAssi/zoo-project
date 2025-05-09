@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Login JWT</title>
+</head>
+<body>
+    <h1>Test de connexion avec JWT + Cookie</h1>
+
+    <button id="loginBtn">Se connecter</button>
+    <button id="protectedBtn">Appel route protégée</button>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000'; // Modifie si ton serveur n'est pas à cette adresse
+
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            fetch(`${API_URL}/api/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include', // 👈 nécessaire pour accepter les cookies
+                body: JSON.stringify({
+                    email: 'melvin@example.com',
+                    password: 'AzertyAzerty25' // 🔒 Mets le bon mot de passe ici
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Réponse login:', data);
+                alert('Connexion réussie (vérifie la console)');
+            })
+            .catch(err => console.error(err));
+        });
+        
+        document.getElementById('protectedBtn').addEventListener('click', () => {
+            fetch('http://127.0.0.1:8000/api/protected', {
+                method: 'POST',
+                credentials: 'include', // Ceci permet d'envoyer les cookies
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Réponse protégée:', data);
+                alert('Données protégées récupérées !');
+            })
+            .catch(err => console.error('Erreur d\'authentification ou autre', err));
+        });
+    </script>
+</body>
+</html>
