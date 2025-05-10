@@ -1,0 +1,43 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue au Zoo{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="page_container">
+        <section class="hero_section">
+            <video  autoplay muted loop>
+                <source src="{{ asset('videos/hero_section.mp4') }}" type="video/mp4">
+                Votre navigateur ne supporte pas la vidéo.
+            </video> 
+            <h1>Bienvenue au cœur de la nature sauvage</h1> 
+            <h2>Découvrez les animaux du monde entier dans un lieu dédié à leur bien-être.</h2>         
+        </section>
+        <section class="section_1">
+            <div class="about_container">
+                <div class="about_img">
+                    <img src="{{ asset('images/lion_banner.jpg') }}" alt="lion_banner">
+                </div>
+                <div class="about_txt">
+                    <h2>Notre mission</h2>  
+                    <h6>
+                        Chez Nous, notre priorité est le bien-être des animaux et la sensibilisation du public à la biodiversité.  À travers des espaces respectueux de chaque espèce, nous offrons un lieu d’apprentissage, de protection et de découverte pour tous.  Chaque visite est l’occasion de mieux comprendre notre monde vivant et de contribuer à sa préservation.
+                    </h6> 
+                </div>
+            </div>
+ 
+        </section>
+        <section class="section_2">
+     
+        </section>
+        <section class="section_3">
+     
+        </section>
+    
+    </div>
+
+{% endblock %}

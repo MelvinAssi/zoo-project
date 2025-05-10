@@ -216,13 +216,14 @@ CREATE TABLE enclosure(
    UNIQUE(name)
 );
 
-CREATE TABLE opening_hours(
-   id VARCHAR(50),
+CREATE TABLE opening_hours (
+   id UUID DEFAULT gen_random_uuid(),
    day_ VARCHAR(10) NOT NULL,
-   opennnig_time TIME NOT NULL,
+   opening_time TIME NOT NULL,
    closing_time TIME NOT NULL,
    PRIMARY KEY(id),
-   UNIQUE(day_)
+   UNIQUE(day_),
+   CHECK(closing_time > opening_time)
 );
 
 CREATE TABLE message(

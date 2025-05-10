@@ -1,0 +1,38 @@
+header{
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    width: 100%;
+    background-color: var(--color4);
+    justify-content:space-between;
+    align-items:center;
+}
+.navbar{
+    display: flex;
+    flex-direction: row;
+ 
+}
+a{
+    padding: 10px;
+    color: var(--color1);
+    text-decoration: none;
+    cursor: pointer;
+}
+.logo {
+    margin-left: 2rem;
+    max-width: 81px; /* Ajuste selon la taille de ton logo */
+    height: auto;
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+
+

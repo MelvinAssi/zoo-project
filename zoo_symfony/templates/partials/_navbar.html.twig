@@ -1,0 +1,12 @@
+
+<nav class="navbar">
+    <a href="{{ path('app_home') }}"><h3>Accueil</h3></a>
+    <a href=""><h3>Animaux</h3></a>
+    <a href=""><h3>Nous contacter</h3></a>    
+    {% if app.user %}
+        <a href="{{ path('app_user_list') }}">Utilisateurs</a>
+        <a href="{{ path('app_logout') }}">Déconnexion</a>
+    {% else %}
+        <a href=""><h3>Connexion</h3></a>
+    {% endif %}
+</nav>
