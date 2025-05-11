@@ -1,12 +1,23 @@
 
 <nav class="navbar">
     <a href="{{ path('app_home') }}"><h3>Accueil</h3></a>
-    <a href=""><h3>Animaux</h3></a>
-    <a href=""><h3>Nous contacter</h3></a>    
+    <a href="{{ path('app_animals') }}"><h3>Animaux</h3></a>
+      
     {% if app.user %}
-        <a href="{{ path('app_user_list') }}">Utilisateurs</a>
-        <a href="{{ path('app_logout') }}">Déconnexion</a>
+        <a href="#" onclick="logout()"><h3>Déconnexion</h3></a>
     {% else %}
-        <a href=""><h3>Connexion</h3></a>
+        <a href="{{ path('app_contact') }}"><h3>Nous contacter</h3></a>  
+        <a href="{{ path('app_login') }}"><h3>Connexion</h3></a>
     {% endif %}
 </nav>
+
+<script>
+function logout() {
+    fetch('/api/logout', {
+        method: 'POST',
+        credentials: 'include'
+    }).then(() => {
+        window.location.href = '/';
+    });
+}
+</script>

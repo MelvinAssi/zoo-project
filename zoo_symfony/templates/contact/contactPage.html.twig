@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact - Zoo{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/contact.css') }}">
+{% endblock %}
+{% block body %}
+<div class="page_container">
+    <h1>Contactez-nous</h1>
+    <h2>Nous serons ravis de répondre à vos questions</h2>
+    <form class="form_contact" method="post" action="{{ path('app_contact') }}">  
+        <label>
+            Nom
+            <input type="text" name="name" value="{{ name|default('') }}">
+        </label>
+        
+        <label>
+            Email
+            <input type="email" name="email" value="{{ email|default('') }}">
+        </label>
+        
+        <label>
+            Sujet
+            <input type="text" name="subject" value="{{ subject|default('') }}">
+        </label>
+        
+        <label>
+            Message
+            <textarea name="message" rows="5">{{ message|default('') }}</textarea>
+        </label>
+
+        <button type="submit"><h4>Envoyer</h4></button>
+    </form>
+
+    {% if errors is defined %}
+        <ul class="errors">
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

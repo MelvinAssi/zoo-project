@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordHasherInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AuthController extends AbstractController
 {
@@ -61,7 +63,7 @@ class AuthController extends AbstractController
         return $response;
     }
 
-    #[Route('/logout', name: 'app_logout', methods: ['POST'])]
+    #[Route('/api/logout', name: 'api_logout', methods: ['POST'])]
     public function logout(): Response
     {
         $cookie = Cookie::create('BEARER')->withValue('')->withExpires(time() - 3600);
@@ -72,37 +74,37 @@ class AuthController extends AbstractController
         return $response;
     }
 
-    #[Route('/api/protected', name: 'protected_route', methods: ['POST'])]
-    public function protected(Request $request, JWTEncoderInterface $jwtEncoder): JsonResponse
+    #[Route('/login', name: 'app_login')]
+    public function contact(Request $request, ValidatorInterface $validator)
     {
-        $token = $request->cookies->get('BEARER');
-        $decoded = null;
-        try {
-            $decoded = $token ? $jwtEncoder->decode($token) : null;
-        } catch (\Exception $e) {
-            $decoded = ['error' => $e->getMessage()];
+        $errors = [];
+
+        if ($request->isMethod('POST')) {
+            $data = $request->request->all();
+
+            $constraints = new Assert\Collection([
+                'email' => [new Assert\NotBlank(), new Assert\Email()],                
+                'password' => [new Assert\NotBlank(), new Assert\Length(['min' => 12])],
+            ]);
+
+            $violations = $validator->validate($data, $constraints);
+
+            foreach ($violations as $violation) {
+                $errors[] = $violation->getPropertyPath() . ': ' . $violation->getMessage();
+            }
+
+            if (empty($errors)) {
+                return $this->redirectToRoute('app_home');
+            }
         }
 
-        dump($request->cookies->all(), $request->headers->all(), $this->getUser(), $decoded);
-
-        $user = $this->getUser();
-        if (!$user instanceof Users) {
-            return new JsonResponse([
-                'message' => 'Non authentifié',
-                'debug' => [
-                    'user' => $user,
-                    'decoded' => $decoded,
-                    'token' => $token
-                ]
-            ], 401);
-        }
-
-        return new JsonResponse([
-            'message' => 'Tu es bien authentifié !',
-            'email' => $user->getEmail(),
-            'roles' => $user->getRoles(),
+        return $this->render('login/loginPage.html.twig', [
+            'errors' => $errors,
+            'email' => $request->request->get('email'),
+            'name' => $request->request->get('password'),
         ]);
     }
+
 
 
 

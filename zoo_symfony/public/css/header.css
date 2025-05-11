@@ -12,7 +12,7 @@ header{
     flex-direction: row;
  
 }
-a{
+.navbar a{
     padding: 10px;
     color: var(--color1);
     text-decoration: none;

@@ -206,15 +206,6 @@ CREATE TABLE USERS(
    UNIQUE(email)
 );
 
-CREATE TABLE enclosure(
-   id_enclosure VARCHAR(50),
-   name VARCHAR(50) NOT NULL,
-   max_capacity INT NOT NULL,
-   specie_type VARCHAR(50) NOT NULL,
-   localisation INT NOT NULL,
-   PRIMARY KEY(id_enclosure),
-   UNIQUE(name)
-);
 
 CREATE TABLE opening_hours (
    id UUID DEFAULT gen_random_uuid(),
@@ -247,23 +238,28 @@ CREATE TABLE connection_log(
    PRIMARY KEY(id_connection_log),
    FOREIGN KEY(id_users) REFERENCES USERS(id_users)
 );
+CREATE TABLE enclosure (
+    id_enclosure UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(50) NOT NULL UNIQUE,
+    max_capacity INT NOT NULL,
+    specie_type VARCHAR(50) NOT NULL,
+    localisation INT NOT NULL
+);
 
-CREATE TABLE animal(
-   id_animal VARCHAR(50),
-   name VARCHAR(50) NOT NULL,
-   specie VARCHAR(50) NOT NULL,
-   age INT NOT NULL,
-   description TEXT,
-   created_at DATETIME NOT NULL,
-   updated_at DATETIME NOT NULL,
-   photo TEXT,
-   id_users VARCHAR(50) NOT NULL,
-   id_enclosure VARCHAR(50) NOT NULL,
-   id_users_1 VARCHAR(50) NOT NULL,
-   PRIMARY KEY(id_animal),
-   UNIQUE(name),
-   UNIQUE(specie),
-   FOREIGN KEY(id_users) REFERENCES USERS(id_users),
-   FOREIGN KEY(id_enclosure) REFERENCES enclosure(id_enclosure),
-   FOREIGN KEY(id_users_1) REFERENCES USERS(id_users)
+CREATE TABLE animal (
+      id_animal UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      name VARCHAR(50) NOT NULL,
+      specie VARCHAR(50) NOT NULL,
+      age INT NOT NULL,
+      description TEXT,
+      created_at TIMESTAMP NOT NULL,
+      updated_at TIMESTAMP NOT NULL,
+      photo TEXT,
+      created_by VARCHAR(50) NOT NULL,
+      updated_by VARCHAR(50) NOT NULL,
+      id_enclosure UUID NOT NULL,
+
+      FOREIGN KEY (created_by) REFERENCES users(id_users),
+      FOREIGN KEY (updated_by) REFERENCES users(id_users),
+      FOREIGN KEY (id_enclosure) REFERENCES enclosure(id_enclosure)
 );

@@ -19,6 +19,12 @@ security:
             stateless: true
             jwt: ~
 
+        main:
+            lazy: true
+            provider: app_user_provider
+            stateless: true
+            jwt: ~
+            
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/admin, roles: ROLE_ADMIN }

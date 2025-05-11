@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}login - Zoo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/login.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="page_container">
+    <h1>Connexion</h1>
+
+    <form id="form_login">
+        <label>
+            Email
+            <input type="email" name="email" required>
+        </label>
+        <ul id="errorEmail" class="errors" style="color: red;"></ul>
+        <label>
+            Mot de passe
+            <input type="password" name="password" required>
+        </label>
+        <ul id="errorPassword" class="errors" style="color: red;"></ul>   
+        <button type="submit"><h4>Connexion</h4></button>
+    </form>
+    <ul id="errorLogin" class="errors" style="color: red;"></ul>
+</div>
+{% endblock %}
