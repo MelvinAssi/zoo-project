@@ -22,6 +22,17 @@ class AnimalsPageController extends AbstractController
         return new JsonResponse($jsonContent, 200, [], true);
     }
 
+    #[Route('/animal/random/{count}', name: 'animal_random', methods: ['GET'])]
+    public function random(AnimalRepository $animalRepository, int $count = 4): JsonResponse
+    {
+        $allAnimals = $animalRepository->findAll();
+        shuffle($allAnimals);
+        $randomAnimals = array_slice($allAnimals, 0, $count);
+
+        return $this->json($randomAnimals, 200, [], ['groups' => ['animal:read']]);
+    }
+
+
     #[Route('/animals', name: 'app_animals', methods: ['GET'])]
     public function index(): Response
     {

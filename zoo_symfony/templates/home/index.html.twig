@@ -6,6 +6,10 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/homePage.js') }}"></script>
+{% endblock %}
 
 {% block body %}
     <div class="page_container">
@@ -33,13 +37,22 @@
         </section>
         <section class="section_2">
             <h1>Quelques résidents du zoo</h1> 
-            <div></div> 
-            <button onclick="window.location.href = '{{ path('app_contact') }}'"><h4>Voir tous les animaux</h4></button>
+            <template id="animal-card-template">
+                <div class="animal-card">
+                    <img src="" alt="" class="img_card">
+                    <h6 class="name_card"></h6>
+                    <h6 class="specie_card"></h6>
+                    <h6 class="age_card"></h6>
+                </div>
+            </template>
+
+            <div id="animal_list"></div>
+            <button onclick="window.location.href = '{{ path('app_animals') }}'"><h4>Voir tous les animaux</h4></button>
         
         </section>
         <section class="section_3">
             <h2>Une question ? Contactez-nous !</h2> 
-            <button onclick="window.location.href = '{{ path('app_animals') }}'"><h4>Voir tous les animaux</h4></button>     
+            <button onclick="window.location.href = '{{ path('app_contact') }}'"><h4>Nous contacter</h4></button>     
         </section>
     
     </div>

@@ -14,7 +14,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "NONE")]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'animal:read'])]
     #[ORM\Column(name: 'id_users', type: 'string', length: 50)]
     private ?string $id = null;
 

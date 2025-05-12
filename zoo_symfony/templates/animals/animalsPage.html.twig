@@ -1,15 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bienvenue au Zoo{% endblock %}
+{% block title %}Animal-Zoo{% endblock %}
 {% block stylesheets %}
-    {{ parent() }}
-    
+    {{ parent() }}  
+    <link rel="stylesheet" href="{{ asset('css/animalpage.css') }}">  
 {% endblock %}
-
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/animalPage.js') }}"></script>
+{% endblock %}
 {% block body %}
     <div class="page_container">
-        <h1>Animaux</h1> 
-    
+        <h1>Découvrez nos animaux</h1> 
+        <h2>Apprenez-en plus sur les pensionnaires du zoo</h2>
+        <template id="animal-card-template">
+            <div class="animal-card">
+                <img src="" alt="" class="img_card">
+                <h6 class="name_card"></h6>
+                <h6 class="specie_card"></h6>
+                <h6 class="age_card"></h6>
+            </div>
+        </template>
+
+        <div id="animal_list"></div>
     </div>
 
 {% endblock %}

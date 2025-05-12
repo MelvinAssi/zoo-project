@@ -197,10 +197,10 @@ CREATE TABLE USERS(
    username VARCHAR(50) NOT NULL,
    email VARCHAR(50) NOT NULL,
    password VARCHAR(100) NOT NULL,
-   role LOGICAL NOT NULL,
+   role BOOLEAN NOT NULL,
    created_at DATETIME NOT NULL,
-   is_active LOGICAL NOT NULL,
-   first_login_done LOGICAL NOT NULL,
+   is_active BOOLEAN NOT NULL,
+   first_login_done BOOLEAN NOT NULL,
    PRIMARY KEY(id_users),
    UNIQUE(username),
    UNIQUE(email)
@@ -217,16 +217,17 @@ CREATE TABLE opening_hours (
    CHECK(closing_time > opening_time)
 );
 
-CREATE TABLE message(
-   id_message VARCHAR(50),
-   name VARCHAR(50) NOT NULL,
-   email VARCHAR(50) NOT NULL,
-   subject VARCHAR(50) NOT NULL,
+CREATE TABLE message (
+   id_message UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+   name VARCHAR(100) NOT NULL,
+   email VARCHAR(100) NOT NULL,
+   subject VARCHAR(150) NOT NULL,
    content TEXT NOT NULL,
-   id_users VARCHAR(50) NOT NULL,
-   PRIMARY KEY(id_message),
-   UNIQUE(name),
-   FOREIGN KEY(id_users) REFERENCES USERS(id_users)
+   is_read BOOLEAN DEFAULT FALSE,
+   is_responded BOOLEAN DEFAULT FALSE,
+   created_at TIMESTAMP DEFAULT NOW(),
+   processed_by VARCHAR(50), 
+   FOREIGN KEY (processed_by) REFERENCES users(id_users)
 );
 
 CREATE TABLE connection_log(

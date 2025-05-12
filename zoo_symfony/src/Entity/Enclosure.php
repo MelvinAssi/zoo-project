@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Enclosure
 {
     #[ORM\Id]
-    #[Groups(['enclosure:read'])]
+    #[Groups(['enclosure:read','animal:read'])]
     #[ORM\Column(name: 'id_enclosure', type: 'string', length: 50)]
     private ?string $id = null;
 
