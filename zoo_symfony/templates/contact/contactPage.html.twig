@@ -5,32 +5,36 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/contact.css') }}">
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/contactPage.js') }}"></script>
+{% endblock %}
 {% block body %}
 <div class="page_container">
     <h1>Contactez-nous</h1>
     <h2>Nous serons ravis de répondre à vos questions</h2>
-    <form class="form_contact" method="post" action="{{ path('app_contact') }}">  
+    <form id="form_contact" >  
         <label>
             Nom
-            <input type="text" name="name" value="{{ name|default('') }}">
+            <input type="text" name="name" required>
         </label>
         
         <label>
             Email
-            <input type="email" name="email" value="{{ email|default('') }}">
+            <input type="email" name="email" required>
         </label>
-        
+        <ul id="errorEmail" class="errors" style="color: red;"></ul>
         <label>
             Sujet
-            <input type="text" name="subject" value="{{ subject|default('') }}">
+            <input type="text" name="subject" required>
         </label>
         
         <label>
             Message
-            <textarea name="message" rows="5">{{ message|default('') }}</textarea>
+            <textarea name="message" rows="5" required></textarea>
         </label>
 
-        <button type="submit"><h4>Envoyer</h4></button>
+        <button type="submit">Envoyer</button>
     </form>
 
     {% if errors is defined %}

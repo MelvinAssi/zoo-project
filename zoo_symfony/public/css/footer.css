@@ -25,6 +25,8 @@ footer{
         color: var(--color4);
         text-decoration: none;
         cursor: pointer;
+        font-family: 'Tinos', sans-serif;
+        font-size: 1.44rem;
     }
 }
 .social_link{

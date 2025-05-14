@@ -1,8 +1,9 @@
 security:
     password_hashers:
         App\Entity\Users:
-            algorithm: auto
-
+            algorithm: argon2id
+        App\Controller\Admin\UserscrudController:
+            algorithm: argon2id
     providers:
         app_user_provider:
             entity:
@@ -19,14 +20,23 @@ security:
             stateless: true
             jwt: ~
 
+            logout:
+                path: /logout
+                target: /login
+
         main:
             lazy: true
             provider: app_user_provider
             stateless: true
-            jwt: ~
+            jwt: ~       
+
+            logout:
+                path: /logout
+                target: /login
+            
             
     access_control:
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/admin, roles: ROLE_ADMIN }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         

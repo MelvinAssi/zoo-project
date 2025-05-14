@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const response = await fetch('/api/login', {
+        const response = await fetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,8 +72,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (response.ok) {
             const data = await response.json();
-            alert(data.message);
-            window.location.href = '/'; // ou autre
+            alert(data.status);
+            if (data.status === 'reset_required') {
+                window.location.href = '/firstlogin';
+            }else{
+                window.location.href = '/api';
+            }
+            
         } else {
             const error = await response.text();
             alert('Erreur : ' + error);

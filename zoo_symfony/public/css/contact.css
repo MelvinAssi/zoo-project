@@ -9,7 +9,7 @@
 
 }
 
-.form_contact{
+#form_contact{
     display: flex;
     flex-direction: column;
     width: clamp(400px,80%,500px);
@@ -21,7 +21,7 @@
     gap: 1rem;
 }
 
-.form_contact label{
+#form_contact label{
     color: var(--color1);
     font-family: 'Tinos', sans-serif;
     font-size: 1.44rem;
@@ -31,7 +31,7 @@
     padding-left: 2rem;
 
 }
-.form_contact input{
+#form_contact input{
     width: 18.75rem;
     background-color: var(--color1);
     color: var(--color4);
@@ -40,16 +40,16 @@
     font-size: 1.44rem;
     padding: 0.5rem;
 }
-.form_contact textarea{
+#form_contact textarea{
     width: 18.75rem;
     background-color: var(--color1);
     color: var(--color4);
     border-radius: 0.5rem;
     border: 2px solid var(--color4);
     font-size: 1.44rem;
+    resize: none;
 }
-
-.form_contact button{
+#form_contact button{
     align-self: center;
     background-color: var(--color1);
     color: var(--color4);
@@ -57,4 +57,5 @@
     border: 2px solid var(--color4);
     width: 50%;
     padding: 0.5rem;
+    font-size: 1.44rem;
 }

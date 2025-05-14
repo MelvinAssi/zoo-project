@@ -4,7 +4,8 @@
     <a href="{{ path('app_animals') }}"><h3>Animaux</h3></a>
       
     {% if app.user %}
-        <a href="#" onclick="logout()"><h3>Déconnexion</h3></a>
+        <a href="/api" ><h3>Dashboard</h3></a>
+        <a href="{{ path('api_logout') }}" onclick="logout()"><h3>Déconnexion</h3></a>        
     {% else %}
         <a href="{{ path('app_contact') }}"><h3>Nous contacter</h3></a>  
         <a href="{{ path('app_login') }}"><h3>Connexion</h3></a>
@@ -14,7 +15,7 @@
 <script>
 function logout() {
     fetch('/api/logout', {
-        method: 'POST',
+        method: 'GET',
         credentials: 'include'
     }).then(() => {
         window.location.href = '/';

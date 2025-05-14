@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ContactPageController extends AbstractController
 {
+    /*
     #[Route('/contact', name: 'app_contact')]
     public function contact(Request $request, ValidatorInterface $validator)
     {
@@ -21,7 +22,7 @@ class ContactPageController extends AbstractController
             if (!$this->isCsrfTokenValid('contact_form', $request->request->get('_token'))) {
                 $errors[] = 'Jeton CSRF invalide.';
             }
-            */
+            *//*
             $data = $request->request->all();
 
             $constraints = new Assert\Collection([
@@ -51,4 +52,5 @@ class ContactPageController extends AbstractController
             'message' => $request->request->get('message'),
         ]);
     }
+    */
 }

@@ -11,6 +11,8 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render('home/index.html.twig');
+        $response = $this->render('home/index.html.twig');
+        $response->headers->set('X-Robots-Tag', 'noindex');
+        return $response;
     }
 }

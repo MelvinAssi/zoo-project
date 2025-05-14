@@ -1,0 +1,8 @@
+easy_admin:
+    entities:
+        # List the entity class name you want to manage
+        - App\Entity\Users
+        - App\Entity\Enclosure
+        - App\Entity\Animal
+        - App\Entity\OpeningHours
+        - App\Entity\Message

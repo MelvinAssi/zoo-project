@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Users;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Encoder\UserPasswordHasherInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -19,14 +19,16 @@ class AuthController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private JWTTokenManagerInterface $jwtManager;
+    private UserPasswordHasherInterface $hasher;
 
-    public function __construct(EntityManagerInterface $entityManager, JWTTokenManagerInterface $jwtManager)
+    public function __construct(EntityManagerInterface $entityManager, JWTTokenManagerInterface $jwtManager,UserPasswordHasherInterface $hasher)
     {
         $this->entityManager = $entityManager;
         $this->jwtManager = $jwtManager;
+        $this->hasher = $hasher;
     }
 
-    #[Route('/api/login', name: 'api_login', methods: ['POST'])]
+    #[Route('/login', name: 'login', methods: ['POST'])]
     public function login(Request $request)
     {
         // Récupération des données envoyées par le client
@@ -36,13 +38,17 @@ class AuthController extends AbstractController
         $user = $this->entityManager->getRepository(Users::class)->findOneBy(['email' => $data['email']]);
 
         if (!$user) {
-            return new Response('Utilisateur non trouvé', 404);
+            return new JsonResponse('User not found', 404);
+        }
+        if(!$user->getIsActive()){
+            return new JsonResponse('User disabled',401);
+        }        
+        
+        if (!$this->hasher->isPasswordValid($user, $data['password'])) {
+
+            return new JsonResponse("Error password ", 401);
         }
 
-        // Vérification du mot de passe
-        if (!password_verify($data['password'], $user->getPassword())) {
-            return new Response('Mot de passe incorrect', 401);
-        }
         // Créer un jeton JWT
         $token = $this->jwtManager->create($user);
 
@@ -54,7 +60,11 @@ class AuthController extends AbstractController
             ->withPath('/')
             ->withExpires(time() + 3600); // 1h
         // Réponse avec message de succès
-        $response = new Response(json_encode(['message' => 'Connecté avec succès ']));
+        $response = new JsonResponse([
+            'message' => $user->getFirstLoginDone() ? 'Connexion réussie' : 'Mot de passe à changer',
+            'status' => $user->getFirstLoginDone() ? 'ok' : 'reset_required'
+        ]);
+        
         $response->headers->set('Content-Type', 'application/json');
 
         // Ajouter le cookie à la réponse
@@ -63,8 +73,8 @@ class AuthController extends AbstractController
         return $response;
     }
 
-    #[Route('/api/logout', name: 'api_logout', methods: ['POST'])]
-    public function logout(): Response
+    #[Route('/api/logout', name: 'api_logout', methods: ['GET'])]
+    public function logout_api(): Response
     {
         $cookie = Cookie::create('BEARER')->withValue('')->withExpires(time() - 3600);
         $response = new Response(json_encode(['message' => 'Déconnecté avec succès']));
@@ -72,6 +82,13 @@ class AuthController extends AbstractController
         $response->headers->setCookie($cookie);
 
         return $response;
+    }
+    
+    #[Route('/logout', name: 'app_logout')]
+    public function logout(): void
+    {
+        // Ce code ne sera jamais exécuté
+        throw new \Exception('Ne devrait jamais être exécuté – géré par Symfony.');
     }
 
     #[Route('/login', name: 'app_login')]

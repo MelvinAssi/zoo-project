@@ -10,10 +10,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\Table(name: 'users')]
+#[ORM\HasLifecycleCallbacks]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "NONE")]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[Groups(['user:read', 'animal:read'])]
     #[ORM\Column(name: 'id_users', type: 'string', length: 50)]
     private ?string $id = null;
@@ -34,9 +36,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', options: ['default' => 'now()'], insertable: false, updatable: false)]
     #[Groups(['user:read'])]
-    private ?\DateTimeInterface $createdAt;
+    private ?\DateTimeInterface $createdAt = null; 
 
     #[ORM\Column(type: 'boolean')]
     #[Groups(['user:read'])]
@@ -45,6 +47,10 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     #[Groups(['user:read'])]
     private bool $firstLoginDone;
+
+
+
+    
 
     public function getUsername(): string
     {
@@ -57,7 +63,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // Getter et Setter pour 'email'
     public function getEmail(): string
     {
         return $this->email;
@@ -69,7 +74,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // Getter et Setter pour 'password'
     public function getPassword(): string
     {
         return $this->password;
@@ -96,7 +100,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // Getter et Setter pour 'createdAt'
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
@@ -108,7 +111,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // Getter et Setter pour 'isActive'
     public function getIsActive(): bool
     {
         return $this->isActive;
@@ -143,8 +145,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->id = $id;
         return $this;
     }
-
-
 
 
 
