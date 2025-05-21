@@ -9,7 +9,11 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/login.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        const firebaseConfig = {{ firebase_config|json_encode(constant('JSON_UNESCAPED_SLASHES'))|raw }};
+    </script>
+    <script type="module" src="{{ asset('js/login.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -27,6 +31,9 @@
             <input type="password" name="password" required>
         </label>
         <ul id="errorPassword" class="errors" style="color: red;"></ul>   
+        <div class="captcha-wrapper">
+            <div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+        </div>
         <button type="submit"><h4>Connexion</h4></button>
     </form>
     <ul id="errorLogin" class="errors" style="color: red;"></ul>

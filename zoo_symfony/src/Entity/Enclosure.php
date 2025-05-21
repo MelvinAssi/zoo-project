@@ -87,4 +87,9 @@ class Enclosure
         $this->localisation = $localisation;
         return $this;
     }
+
+        public function __toString(): string
+    {
+        return $this->name ;
+    }
 }

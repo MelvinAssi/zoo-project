@@ -1,18 +1,44 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block stylesheets %}
+{% block head_stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/admin-custom.css') }}">
 {% endblock %}
-{% block content_footer %}
-    Made with 🤍 by the guys and gals at SymfonyCasts
-{% endblock %}
-{% block content %}
-    <h1>Bienvenue dans le tableau de bord de Zoo Symfony 🐾</h1>
 
-    <div class="row">
-        <div class="col">
-            
-        </div>
+{% block body_javascript %}
+    {{ parent() }}
+    {% if is_granted('ROLE_ADMIN') %}
+        <script>
+            const firebaseConfig = {{ firebase_config|json_encode(constant('JSON_UNESCAPED_SLASHES'))|raw }};
+        </script>
+        <script type="module" src="{{ asset('js/dashboard.js') }}"/></script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="page_container">
+        <h1>Bienvenue dans le tableau de bord de Zoo Symfony 🐾</h1>
+
+    {% if is_granted('ROLE_ADMIN') %}
+      <ul id="log"></ul>
+    <table>
+        <thead>
+        <tr>
+            <th>email</th>
+            <th>ip</th>
+            <th>userAgent</th>
+            <th>timestamp</th>
+        </tr>
+        </thead>
+        <tbody id="table_body">
+
+        </tbody>
+    </table> 
+
+    {% else %}
+      <p>Vous n'avez pas accès aux logs.</p>
+    {% endif %}
+    
     </div>
+
 {% endblock %}

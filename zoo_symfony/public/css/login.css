@@ -41,14 +41,23 @@
     font-size: 1.44rem;
     padding: 0.5rem;
 }
-#form_login textarea{
-    width: 18.75rem;
-    background-color: var(--color1);
-    color: var(--color4);
-    border-radius: 0.5rem;
-    border: 2px solid var(--color4);
-    font-size: 1.44rem;
+
+.captcha-wrapper {
+    text-align: center;
+    overflow-x: visible;
 }
+
+.g-recaptcha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: visible;
+    div {
+      overflow-x: visible;
+    }
+
+}
+
 
 #form_login button{
     align-self: center;

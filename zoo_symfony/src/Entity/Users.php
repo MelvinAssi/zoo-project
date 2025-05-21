@@ -163,4 +163,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         // Efface les infos sensibles (si besoin)
     }
 
+    public function __toString(): string
+    {
+        return $this->username . ' (' . $this->email . ')';
+    }
+
 }
