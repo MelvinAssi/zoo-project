@@ -6,7 +6,12 @@
     gap:2rem;
     min-height: 100vh;
     background-color: var(--color2);
-    color: var(--color1)
+    color: var(--color1);  
+
+    h1,h2{         
+        text-align: center;
+        padding: 0.5rem;
+    }
 }
 #animal_list{
     width: 100%;

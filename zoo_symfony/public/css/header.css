@@ -20,7 +20,7 @@ header{
 }
 .logo {
     margin-left: 2rem;
-    max-width: 81px; /* Ajuste selon la taille de ton logo */
+    max-width: 81px; 
     height: auto;
 }
 
@@ -36,3 +36,47 @@ header{
 
 
 
+.burger {
+    display: none;
+    font-size: 24px;
+    color: var(--color1);
+    cursor: pointer;
+    padding: 10px;
+
+}
+
+@media (max-width: 768px) {
+    header{
+        height: 80px;
+    }
+    .logo {
+        margin-left: 1rem;
+        max-width: 61px; 
+        height: auto;
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        right: 0;
+        background-color: var(--color4);
+        width: 100%;
+        text-align: center;
+        z-index: 1000;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .burger {
+        display: block;
+        margin-right: 2rem;
+    }
+
+    .navbar {
+        justify-content: space-between;
+        width: 100%;
+    }
+}

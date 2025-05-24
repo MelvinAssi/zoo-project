@@ -20,23 +20,24 @@
         <h1>Bienvenue dans le tableau de bord de Zoo Symfony 🐾</h1>
 
     {% if is_granted('ROLE_ADMIN') %}
-      <ul id="log"></ul>
-    <table>
-        <thead>
-        <tr>
-            <th>email</th>
-            <th>ip</th>
-            <th>userAgent</th>
-            <th>timestamp</th>
-        </tr>
-        </thead>
-        <tbody id="table_body">
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>email</th>
+                <th>ip</th>
+                <th>userAgent</th>
+                <th>timestamp</th>
+            </tr>
+            </thead>
+            <tbody id="table_body">
 
-        </tbody>
-    </table> 
+            </tbody>
+        </table> 
+    </div>
 
     {% else %}
-      <p>Vous n'avez pas accès aux logs.</p>
+
     {% endif %}
     
     </div>

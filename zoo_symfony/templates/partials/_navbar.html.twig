@@ -1,15 +1,23 @@
 
 <nav class="navbar">
-    <a href="{{ path('app_home') }}"><h3>Accueil</h3></a>
-    <a href="{{ path('app_animals') }}"><h3>Animaux</h3></a>
-      
-    {% if app.user %}
-        <a href="/api" ><h3>Dashboard</h3></a>
-        <a href="{{ path('api_logout') }}" onclick="logout()"><h3>Déconnexion</h3></a>        
-    {% else %}
-        <a href="{{ path('app_contact') }}"><h3>Nous contacter</h3></a>  
-        <a href="{{ path('app_login') }}"><h3>Connexion</h3></a>
-    {% endif %}
+    <div class="logo">
+        <img src="{{ asset('images/logo_zoo.png') }}" alt="Zoo Project Logo">
+    </div>
+    <div class="burger" id="burger">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="nav-links" id="nav-links">
+        <a href="{{ path('app_home') }}"><h3>Accueil</h3></a>
+        <a href="{{ path('app_animals') }}"><h3>Animaux</h3></a>
+        {% if app.user %}
+            <a href="/api"><h3>Dashboard</h3></a>
+            <a href="{{ path('api_logout') }}" onclick="logout()"><h3>Déconnexion</h3></a>        
+        {% else %}
+            <a href="{{ path('app_contact') }}"><h3>Nous contacter</h3></a>  
+            <a href="{{ path('app_login') }}"><h3>Connexion</h3></a>
+        {% endif %}
+    </div>
 </nav>
 
 <script>
@@ -21,4 +29,12 @@ function logout() {
         window.location.href = '/';
     });
 }
+document.addEventListener('DOMContentLoaded', () => {
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('nav-links');
+
+    burger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+});
 </script>

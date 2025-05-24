@@ -6,6 +6,8 @@
     min-height: calc(100vh - 100px);
     background-color: var(--color1);
     color: var(--color4);
+    text-align: center;
+    padding: 0.5rem;
 
 }
 
@@ -58,4 +60,24 @@
     width: 50%;
     padding: 0.5rem;
     font-size: 1.44rem;
+}
+
+
+@media (max-width: 768px) {
+    #form_contact{
+        width: 80%;
+        align-items: center;
+    }
+    #form_contact label{
+        flex-direction: column;
+        align-items: center;
+        padding-left: 0;
+
+    }
+    #form_contact input{
+        width: 100%;
+    }
+    #form_contact textarea{
+        width: 100%;
+    }
 }
