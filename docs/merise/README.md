@@ -46,7 +46,7 @@
 
 - ADMIN : accès total.
 
-- EMPLOYE : accès aux animaux, messages, modification de son mot de passe.
+- EMPLOYE : acecès à tout sauf à la modification user.
 
 17. L’interface d’administration est accessible uniquement aux administrateurs (/admin).
 
@@ -54,7 +54,7 @@
 
 18. Un animal est identifié de manière unique par un id.
 
-19. Chaque animal possède un nom, une espèce, un âge, une description, une photo (optionnelle), et un statut (adopté, disponible, etc.).
+19. Chaque animal possède un nom, une espèce, un âge, une description, une photo .
 
 20. Les animaux peuvent être consultés publiquement (même par des visiteurs).
 
@@ -75,7 +75,7 @@
 27. Seuls les employés et administrateurs peuvent lire et répondre aux messages.
 
 ### 🔒 Sécurité et données sensibles
-28. Le mot de passe ne doit jamais être stocké en clair. Il est haché à l’aide de bcrypt, et seul le hachage est stocké dans la base de données.
+28. Le mot de passe ne doit jamais être stocké en clair. Il est haché à l’aide de ARgon2id, et seul le hachage est stocké dans la base de données.
 
 
 29. Les utilisateurs doivent être automatiquement déconnectés après une période d’inactivité définie (ex. : 30 minutes).
@@ -158,15 +158,6 @@ contenu	|TEXT	|non nul	|Corps du message
 date_envoi	|TIMESTAMP|	auto-généré	|Date d’envoi
 lu_par|	FOREIGN KEY|	vers Utilisateur(id), null par défaut	|Employé qui a lu ou répondu
 
-5. Journal de Connexions
-
-| Nom du champ|	Type |   Contraintes |   Description |
-|--------------|----------|--------------------|-------------|
-id	|UUID / SERIAL|	PK, unique, non nul	|Identifiant
-user_id	|FOREIGN KEY	|vers Utilisateur(id)	|Utilisateur connecté
-date_connexion|	TIMESTAMP|	auto-généré|	Date/heure de connexion
-adresse_ip|	VARCHAR(50)|	optionnel	|Adresse IP
-user_agent	|TEXT	|optionnel|	Informations sur le navigateur
 
 
 6. HORAIRES_ZOO 

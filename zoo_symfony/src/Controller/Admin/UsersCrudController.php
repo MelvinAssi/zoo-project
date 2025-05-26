@@ -98,10 +98,7 @@ class UsersCrudController extends AbstractCrudController
             IdField::new('id', 'ID')->setFormTypeOption('disabled',$pageName),
             TextField::new('username', 'Nom d’utilisateur'),
             EmailField::new('email', 'Email'),
-            TextField::new('password', 'Mot de passe')
-            ->hideOnIndex(), 
-            
-
+            TextField::new('password', 'Mot de passe')->hideOnIndex(),
             ArrayField::new('roles', 'Rôles'),
             DateTimeField::new('createdAt', 'Date de création')->hideOnForm(), 
             BooleanField::new('isActive', 'Actif'),
