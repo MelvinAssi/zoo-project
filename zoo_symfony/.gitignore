@@ -1,5 +1,6 @@
 
 ###> symfony/framework-bundle ###
+.env.postgres
 /.env.local
 /.env.local.php
 /.env.*.local

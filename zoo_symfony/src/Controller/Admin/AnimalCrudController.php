@@ -42,8 +42,13 @@ class AnimalCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if (!$entityInstance instanceof Animal) return;
-        $entityInstance->setCreatedAt(now());
-        $entityInstance->setCreatedBy($this->getUser());
+        $now = now();
+        $user = $this->getUser();
+
+        $entityInstance->setCreatedAt($now);
+        $entityInstance->setCreatedBy($user);
+        $entityInstance->setUpdatedAt($now); 
+        $entityInstance->setUpdatedBy($user); 
         $entityManager->persist($entityInstance);
         $entityManager->flush();
     }

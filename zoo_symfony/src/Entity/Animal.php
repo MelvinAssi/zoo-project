@@ -13,7 +13,8 @@ use App\Entity\Enclosure;
 class Animal
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "NONE")]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     #[ORM\Column(name: 'id_animal', type: 'string', length: 50)]
     #[Groups(['animal:read'])]
     private ?string $id = null;
@@ -38,11 +39,11 @@ class Animal
     #[Groups(['animal:read'])]
     private ?string $photo = null;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', options: ['default' => 'now()'], insertable: false, updatable: false)]
     #[Groups(['animal:read'])]
     private ?\DateTimeInterface $created_at = null;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', options: ['default' => 'now()'], insertable: false, updatable: true)]
     #[Groups(['animal:read'])]
     private ?\DateTimeInterface $updated_at = null;
 
